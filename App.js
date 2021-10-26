@@ -1,12 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+
+
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -15,8 +18,8 @@ export default function App() {
           component ={HomeScreen}
         />
         <Stack.Screen
-          name="Private Gallery"
-          component={PrivateGallery}
+          name="CertGenerated"
+          component={CertGenerated}
         />
       
       </Stack.Navigator>
@@ -35,26 +38,51 @@ const styles = StyleSheet.create({
 });
 
 const HomeScreen = ({navigation}) => {
+  const [name, onChangeName] = React.useState("Full name here");
+  const [pps, onChangePPS] = React.useState("PPS Number");
+  const [batch, onChangeBatch] = React.useState("batch");
   return (
+    
+    
     <View style={styles.container}>
-        <Text>Open up App.js to your app!</Text>
+        <Text>Name: </Text>
+        <TextInput
+          //style={styles.input}
+          onChangeText={onChangeName}
+          value = {name}
+        />
+        <Text>PPS: </Text>
+        <TextInput
+          //style={styles.input}
+          onChangePPS={onChangePPS}
+          value = {pps}
+        />
+        <Text>Batch: </Text>
+        <TextInput
+          //style={styles.input}
+          onChangeBatch={onChangeBatch}
+          value = {batch}
+        />
+
         <Button 
-        title = "Access to Private Gallery"
+        title = "Create certificate"
         onPress={() =>
-          navigation.navigate('Private Gallery')}
+          navigation.navigate('CertGenerated')}
         />
 
         <StatusBar style="auto" />
       </View>
+
+      
   )
 }
 
-const PrivateGallery = ({navigation}) => {
+const CertGenerated = ({navigation}) => {
   return (
     <View style={styles.container}>
-        <Text>Here you can add images from your phone to the private Gallery</Text>
+        <Text>Here you can retrieve certs</Text>
         <Button 
-        title = "Add image"
+        title = "Retrieve Cert"
         />
 
         <StatusBar style="auto" />
