@@ -3,6 +3,8 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {Picker} from '@react-native-picker/picker';
+import * as RNFS from 'react-native-fs';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +43,8 @@ const HomeScreen = ({navigation}) => {
   const [name, onChangeName] = React.useState("Full name here");
   const [pps, onChangePPS] = React.useState("PPS Number");
   const [batch, onChangeBatch] = React.useState("batch");
+  const [selectedVaccine, setSelectedVaccine] = React.useState();
+  var path = RNFS.DocumentDirectoryPath + '/certtest.txt';
   return (
     
     
@@ -63,10 +67,23 @@ const HomeScreen = ({navigation}) => {
           onChangeBatch={onChangeBatch}
           value = {batch}
         />
+        <Text>Vaccine: </Text>
+        <Picker
+          selectedValue={selectedVaccine}
+          onValueChange={(itemValue, itemIndex) =>
+            setSelectedVaccine(itemValue)
+          }>
+          <Picker.Item label="Pfizer" value="pfizer" />
+          <Picker.Item label="Jansen" value="jansen" />
+          <Picker.Item label="Moderna" value="moderna" />
+          <Picker.Item label="AstraZeneca" value="astrazeneca" />
+        </Picker>
+
 
         <Button 
         title = "Create certificate"
         onPress={() =>
+          RNFS.writeFile(path, 'Lorem ipsum dolor sit amet', 'utf8'),
           navigation.navigate('CertGenerated')}
         />
 
