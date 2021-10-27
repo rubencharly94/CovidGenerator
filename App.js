@@ -4,14 +4,16 @@ import {NavigationContainer} from '@react-navigation/native';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {Picker} from '@react-native-picker/picker';
-import {FileSystem} from 'expo-file-system';
+//import RNFetchBlob from 'rn-fetch-blob';
+import * as FileSystem from 'expo-file-system';
 import { StorageAccessFramework } from 'expo-file-system';
 //import * as RNFS from 'react-native-fs';
 
 const Stack = createNativeStackNavigator();
-
-let filename = FileSystem.documentDirectory + "text.txt";
-FileSystem.writeAsStringAsync(filename, "Hello World", { encoding: FileSystem.EncodingType.UTF8 });
+//const fs = RNFetchBlob.fs;
+//fs.createFile(NEW_FILE_PATH, 'tesssst', 'utf8');
+  /* let filename = FileSystem.documentDirectory + "text.txt";
+FileSystem.writeAsStringAsync(filename, "Hello World", { encoding: FileSystem.EncodingType.UTF8 });*/
 
 export default function App() {
 
@@ -51,6 +53,9 @@ const HomeScreen = ({navigation}) => {
   const [pps, onChangePPS] = React.useState("PPS Number");
   const [batch, onChangeBatch] = React.useState("batch");
   const [selectedVaccine, setSelectedVaccine] = React.useState();
+
+  const permissions = StorageAccessFramework.requestDirectoryPermissionsAsync();
+  console.log(permissions.granted);
   /*var path = RNFS.DocumentDirectoryPath + '/certtest.txt';
   RNFS.writeFile(path, 'Lorem ipsum dolor sit amet', 'utf8')
   .then((success) => {
@@ -83,7 +88,7 @@ const HomeScreen = ({navigation}) => {
           onChangeBatch={onChangeBatch}
           value = {batch}
         />
-        <Text>Vaccine: +{filename} </Text>
+        <Text>Vaccine: </Text>
         <Picker
           selectedValue={selectedVaccine}
           onValueChange={(itemValue, itemIndex) =>
