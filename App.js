@@ -47,12 +47,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const createFile = async () => {
+const createFile = async (name, pps, batch, vaccine) => {
   const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
   console.log(permissions.granted);
   const uri = permissions.directoryUri;
-  const fileuri = await StorageAccessFramework.createFileAsync(uri, "test10", "text/plain");
-  await StorageAccessFramework.writeAsStringAsync(fileuri, "Esto son los nuevos contenidos");
+  const fileuri = await StorageAccessFramework.createFileAsync(uri, "test11", "text/plain");
+  await StorageAccessFramework.writeAsStringAsync(fileuri, name + pps + batch + vaccine);
 }
 
 const HomeScreen = ({navigation}) => {
@@ -89,13 +89,13 @@ const HomeScreen = ({navigation}) => {
         <Text>PPS: </Text>
         <TextInput
           //style={styles.input}
-          onChangePPS={onChangePPS}
+          onChangeText={onChangePPS}
           value = {pps}
         />
         <Text>Batch: </Text>
         <TextInput
           //style={styles.input}
-          onChangeBatch={onChangeBatch}
+          onChangeText={onChangeBatch}
           value = {batch}
         />
         <Text>Vaccine: </Text>
@@ -113,7 +113,7 @@ const HomeScreen = ({navigation}) => {
 
         <Button 
         title = "Create certificate"
-        onPress = {createFile}
+        onPress = {() => createFile(name, pps, batch, selectedVaccine)}
         />
 
         <StatusBar style="auto" />
