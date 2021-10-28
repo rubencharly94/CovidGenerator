@@ -47,6 +47,13 @@ const styles = StyleSheet.create({
   },
 });
 
+const createFile = async () => {
+  const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
+  console.log(permissions.granted);
+  const uri = permissions.directoryUri;
+  const file = await StorageAccessFramework.createFileAsync(uri, "test1", "txt");
+}
+
 const HomeScreen = ({navigation}) => {
   //var RNFS = require('react-native-fs');
   const [name, onChangeName] = React.useState("Full nam please here");
@@ -54,8 +61,10 @@ const HomeScreen = ({navigation}) => {
   const [batch, onChangeBatch] = React.useState("batch");
   const [selectedVaccine, setSelectedVaccine] = React.useState();
 
-  const permissions = StorageAccessFramework.requestDirectoryPermissionsAsync();
-  console.log(permissions.granted);
+  
+  
+
+  
   /*var path = RNFS.DocumentDirectoryPath + '/certtest.txt';
   RNFS.writeFile(path, 'Lorem ipsum dolor sit amet', 'utf8')
   .then((success) => {
@@ -103,12 +112,7 @@ const HomeScreen = ({navigation}) => {
 
         <Button 
         title = "Create certificate"
-        onPress={() => {
-          
-          navigation.navigate('CertGenerated')
-        }
-
-          }
+        onPress={createFile}
         />
 
         <StatusBar style="auto" />
