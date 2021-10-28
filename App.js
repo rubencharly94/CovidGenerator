@@ -45,14 +45,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  defaultPicker: {
+    width: "100%",
+    height: 50,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: "#DDDDDD",
+    marginBottom: 20,
+    paddingLeft: 15,
+  },
 });
 
 const createFile = async (name, pps, batch, vaccine) => {
   const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
   console.log(permissions.granted);
   const uri = permissions.directoryUri;
-  const fileuri = await StorageAccessFramework.createFileAsync(uri, "test11", "text/plain");
-  await StorageAccessFramework.writeAsStringAsync(fileuri, name + pps + batch + vaccine);
+  const certid = name.charAt(0) + pps + batch + vaccine;
+  const date = new Date();
+  let datetext = date.toString();
+  const fileuri = await StorageAccessFramework.createFileAsync(uri, certid, "text/plain");
+  await StorageAccessFramework.writeAsStringAsync(fileuri, "Name: " + name + "\nPPSN: " + pps + "\nBatch: " + batch + "\nVaccine: " + vaccine + "\nCertificate ID: " + certid + "\nDate: " + datetext);
 }
 
 const HomeScreen = ({navigation}) => {
@@ -60,7 +72,7 @@ const HomeScreen = ({navigation}) => {
   const [name, onChangeName] = React.useState("Full nam please here");
   const [pps, onChangePPS] = React.useState("PPS Number");
   const [batch, onChangeBatch] = React.useState("batch");
-  const [selectedVaccine, setSelectedVaccine] = React.useState();
+  const [selectedVaccine, setSelectedVaccine] = React.useState("Pfizer");
 
   
   
@@ -100,6 +112,7 @@ const HomeScreen = ({navigation}) => {
         />
         <Text>Vaccine: </Text>
         <Picker
+        style={styles.defaultPicker}
           selectedValue={selectedVaccine}
           onValueChange={(itemValue, itemIndex) =>
             setSelectedVaccine(itemValue)
@@ -112,9 +125,15 @@ const HomeScreen = ({navigation}) => {
 
 
         <Button 
-        title = "Create certificate"
-        onPress = {() => createFile(name, pps, batch, selectedVaccine)}
+          title = "Create certificate"
+          onPress = {() => createFile(name, pps, batch, selectedVaccine)}
         />
+
+        <Button 
+          title = "Retrieve cert info"
+          onPress = {() => navigation.navigate('CertGenerated')}
+        />
+
 
         <StatusBar style="auto" />
       </View>
