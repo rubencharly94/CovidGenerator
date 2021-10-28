@@ -1,6 +1,7 @@
 {
   "expo": {
-    "name": "FSProject",
+    "name": "Covid Cert Generator",
+    "description" : "This app generates and facilitates retrieving certs",
     "slug": "FSProject",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -20,6 +21,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package" : "com.<appName>.<appName>",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

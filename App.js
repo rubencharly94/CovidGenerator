@@ -86,8 +86,8 @@ const retrieveFile = async () => {
 
 const HomeScreen = ({navigation}) => {
   //var RNFS = require('react-native-fs');
-  const [name, onChangeName] = React.useState("Full nam please here");
-  const [pps, onChangePPS] = React.useState("PPS Number");
+  const [name, onChangeName] = React.useState("name");
+  const [pps, onChangePPS] = React.useState("PPSNumber");
   const [batch, onChangeBatch] = React.useState("batch");
   const [selectedVaccine, setSelectedVaccine] = React.useState("Pfizer");
 
@@ -113,13 +113,13 @@ const HomeScreen = ({navigation}) => {
         <TextInput
           //style={styles.input}
           onChangeText={onChangeName}
-          value = {name}
+          placeholder = "Name"
         />
         <Text>PPS: </Text>
         <TextInput
           //style={styles.input}
           onChangeText={onChangePPS}
-          value = {pps}
+          placeholder = "PPS Number"
         />
         <Text>Batch: </Text>
         <TextInput
