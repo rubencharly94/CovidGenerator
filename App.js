@@ -51,7 +51,8 @@ const createFile = async () => {
   const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
   console.log(permissions.granted);
   const uri = permissions.directoryUri;
-  const file = await StorageAccessFramework.createFileAsync(uri, "test1", "txt");
+  const fileuri = await StorageAccessFramework.createFileAsync(uri, "test10", "text/plain");
+  await StorageAccessFramework.writeAsStringAsync(fileuri, "Esto son los nuevos contenidos");
 }
 
 const HomeScreen = ({navigation}) => {
@@ -112,7 +113,7 @@ const HomeScreen = ({navigation}) => {
 
         <Button 
         title = "Create certificate"
-        onPress={createFile}
+        onPress = {createFile}
         />
 
         <StatusBar style="auto" />
