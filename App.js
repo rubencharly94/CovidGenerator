@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -8,6 +8,7 @@ import {Picker} from '@react-native-picker/picker';
 import * as FileSystem from 'expo-file-system';
 import { StorageAccessFramework } from 'expo-file-system';
 //import * as RNFS from 'react-native-fs';
+import * as DocumentPicker from 'expo-document-picker';
 
 const Stack = createNativeStackNavigator();
 //const fs = RNFetchBlob.fs;
@@ -67,6 +68,22 @@ const createFile = async (name, pps, batch, vaccine) => {
   await StorageAccessFramework.writeAsStringAsync(fileuri, "Name: " + name + "\nPPSN: " + pps + "\nBatch: " + batch + "\nVaccine: " + vaccine + "\nCertificate ID: " + certid + "\nDate: " + datetext);
 }
 
+const retrieveFile = async () => {
+  let result = await DocumentPicker.getDocumentAsync({
+    type:'*/*',
+    copyToCacheDirectory: false,
+  });
+  const uri = FileSystem.documentDirectory+result.name;
+
+  await FileSystem.copyAsync({
+   from: result.uri,
+   to: uri
+  })
+  //const uri = result.uri;
+  const contentOfCert = await StorageAccessFramework.readAsStringAsync(uri, { encoding : FileSystem.EncodingType.UTF8});
+  return(contentOfCert);
+}
+
 const HomeScreen = ({navigation}) => {
   //var RNFS = require('react-native-fs');
   const [name, onChangeName] = React.useState("Full nam please here");
@@ -114,7 +131,7 @@ const HomeScreen = ({navigation}) => {
         <Picker
         style={styles.defaultPicker}
           selectedValue={selectedVaccine}
-          onValueChange={(itemValue, itemIndex) =>
+          onValueChange={(itemValue) =>
             setSelectedVaccine(itemValue)
           }>
           <Picker.Item label="Pfizer" value="pfizer" />
@@ -143,13 +160,28 @@ const HomeScreen = ({navigation}) => {
 }
 
 const CertGenerated = ({navigation}) => {
+  const [content, loadContent] = React.useState("none");
+  const certinfo = "";
+
+  /*useEffect(() => {
+    // Update the document title using the browser API
+    document.title = `You clicked ${count} times`;
+  });*/
+
   return (
+    
+
     <View style={styles.container}>
-        <Text>Here you can retrieve certs</Text>
+        
         <Button 
         title = "Retrieve Cert"
+        onPress = { async () => {
+          //certinfo = retrieveFile();
+          const results = await retrieveFile();
+          loadContent(results);
+        }}
         />
-
+        <Text> {content} </Text>
         <StatusBar style="auto" />
       </View>
   )
